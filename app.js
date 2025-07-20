@@ -1,27 +1,45 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-
-// 🔷 Step 1: Your own custom component
-function MoodCard(props) {
-  return (
-    <View style={styles.card}>
-      <Text style={styles.cardText}>
-        {props.name} is feeling {props.mood} today! 🌈
-      </Text>
-    </View>
-  );
-}
-
-// 🔶 Step 2: Your main App component
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Mood Tracker</Text>
-
-      {/* Reuse your component like built-in */}
-      <MoodCard name="Radha" mood="Happy 😊" />
-      <MoodCard name="Priya" mood="Excited 🎉" />
-      <MoodCard name="Anu" mood="Sleepy 😴" />
+import React, { useState } from 'react';
+import {StyleSheet, View, Text, TextInput, Button } from 'react-native';
+export default function App()
+{
+  const [name, setName] = useState("");
+  const [mood, setMood] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const handleSubmit = () => {
+    if(name.trim() !== "" && mood.trim() !== ""){
+      setSubmitted(true);
+    }
+  };
+ 
+  
+  return(
+    <View style = {styles.container}>
+      <Text style = {styles.heading}>Enter Your Name:</Text>
+      <TextInput
+      style={styles.input}
+      placeholder="type here.."
+      value={name}
+      onChangeText={(text)=>{
+        setName(text);
+        setSubmitted(false);
+      }}
+      />
+      <Text style = {styles.heading}>how is your mood ?:</Text>
+      <TextInput
+      style={styles.input}
+      placeholder="enter your mood.."
+      value={mood}
+      onChangeText={(text)=>{
+        setMood(text);
+        setSubmitted(false);
+      }}
+      />
+      <Button title = "submit" onPress = {handleSubmit}/>
+      {submitted && (
+         <Text style={styles.output}>Thank You, {name}! 
+         you're feeling {mood} today!</Text>
+      )}
+      
     </View>
   );
 }
@@ -30,25 +48,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 100,
-    alignItems: 'center',
     backgroundColor: '#fff',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  heading:{
+    fontSize: 20,
+    marginBottom: 10,
+    color: 'black',
+    alignSelf: 'flex-start',
   },
-  card: {
+  input: {
     borderWidth: 1,
     borderColor: '#999',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    width: '85%',
-    backgroundColor: '#f0f8ff',
+    padding: 10,
+    borderRadius: 8,
+    width:'100%',
+    marginBottom: 20,
+    fontSize: 16,
   },
-  cardText: {
-    fontSize: 18,
+  output: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#3c3c3c',
+    marginTop: 20,
     textAlign: 'center',
   },
 });
